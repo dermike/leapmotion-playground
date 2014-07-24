@@ -1,0 +1,99 @@
+<html>
+<head>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script>
+
+    // Support both the WebSocket and MozWebSocket objects
+    if ((typeof(WebSocket) == 'undefined') && (typeof(MozWebSocket) != 'undefined')) {
+      WebSocket = MozWebSocket;
+    }
+
+    // Create the socket with event handlers
+    function init() {
+      //Create and open the socket
+      ws = new WebSocket("ws://localhost:6437/");
+
+      ws.onopen = function(event) {
+        console.log('Connected to WebSocket');
+      };
+
+      ws.onmessage = function(event) {
+        var leap = JSON.parse(event.data);
+        if (leap.hands.length > 0) {
+          $('#cube').css('-webkit-transform', 'perspective(500px) rotateY(' + Math.ceil(leap.hands[0].stabilizedPalmPosition[0]) + 'deg) rotateX(' + Math.ceil(leap.hands[0].stabilizedPalmPosition[1]) + 'deg)');
+        }
+      };
+
+      ws.onclose = function(event) {
+        ws = null;
+        console.log('Connection closed.');
+      }
+
+      ws.onerror = function(event) {
+        alert("Received error");
+      };
+    }
+    
+    $(document).ready(function() {
+      init();
+    });
+  </script>
+  <style>
+    #cube {
+      height: 300px;
+      width: 300px;
+      -webkit-transform-style: preserve-3d;
+    }
+    #cube div {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: inset 0 0 30px rgba(125,125,125,0.8);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 50px;
+      color: #000;
+      text-align: center;
+      line-height: 300px;
+    }
+    .back {
+      -webkit-transform: translateZ(-150px) rotateY(180deg);
+      -webkit-transform: translateZ(-150px) rotateY(180deg);
+    }
+    .right {
+      -webkit-transform: rotateY(-270deg) translateX(150px);
+      -webkit-transform-origin: top right;
+    }
+    .left {
+      -webkit-transform: rotateY(270deg) translateX(-150px);
+      -webkit-transform-origin: center left;
+    }
+    .top {
+      -webkit-transform: rotateX(-90deg) translateY(-150px);
+      -webkit-transform-origin: top center;
+    }
+    .bottom {
+      -webkit-transform: rotateX(90deg) translateY(150px);
+      -webkit-transform-origin: bottom center;
+    }
+    .front {
+      -webkit-transform: translateZ(150px);
+    }
+    .vertical-center {
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="cube" class="vertical-center">
+    <div class="front">Mike</div>
+    <div class="back">lite</div>
+    <div class="top">motion</div>
+    <div class="bottom">leap</div>
+    <div class="left">med</div>
+    <div class="right">leker</div>
+  </div>
+</body>
+</html>
