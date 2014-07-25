@@ -1,0 +1,43 @@
+body {
+  background: #fff;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#rsp {
+  height: 300px;
+  width: 768px;
+  max-width: 100%;
+}
+
+.vertical-center {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  margin: auto;
+}
+
+#game {
+  color: #099;
+  font-size: 40px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#status {
+  padding: 1.7em 1em;
+  text-align: center;
+  color: #fff;
+  background-color: #099;
+  font-size: 14px;
+}
+
+#userscore {
+  float: left;
+}
+
+#computerscore {
+  float: right;
+}
+
+#userscore, #computerscore {
+  padding: 1em 1em;
+}
