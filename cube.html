@@ -1,6 +1,5 @@
 <html>
 <head>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script>
 
     // Support both the WebSocket and MozWebSocket objects
@@ -20,23 +19,25 @@
       ws.onmessage = function(event) {
         var leap = JSON.parse(event.data);
         if (leap.hands.length > 0) {
-          $('#cube').css('-webkit-transform', 'perspective(500px) rotateY(' + Math.ceil(leap.hands[0].stabilizedPalmPosition[0]) + 'deg) rotateX(' + Math.ceil(leap.hands[0].stabilizedPalmPosition[1]) + 'deg)');
+          var transform = 'perspective(500px) rotateY(' + Math.ceil(leap.hands[0].stabilizedPalmPosition[0]) +
+          'deg) rotateX(' + Math.ceil(leap.hands[0].stabilizedPalmPosition[1]) + 'deg)';
+          document.getElementById('cube').style['-webkit-transform'] = transform;
         }
       };
 
       ws.onclose = function(event) {
         ws = null;
         console.log('Connection closed.');
-      }
+      };
 
       ws.onerror = function(event) {
-        alert("Received error");
+        console.log("Received error");
       };
     }
     
-    $(document).ready(function() {
+    window.onload = function() {
       init();
-    });
+    };
   </script>
   <style>
     #cube {
